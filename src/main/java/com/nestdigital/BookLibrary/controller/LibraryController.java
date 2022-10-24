@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -31,4 +32,23 @@ public class LibraryController {
         return (List<LibraryModel>)dao.findAll();
     }
 
+
+
+    @Transactional
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/delete",consumes = "application/json",produces = "application/json")
+    public String deletebook(@RequestBody  LibraryModel library)
+    {
+        dao.delete(library.getId());
+        return "{status:'success'}";
+    }
+
+
+@CrossOrigin("*")
+    @PostMapping(path = "/search",produces = "application/json",consumes = "application/json")
+    public List<LibraryModel> searchBook(@RequestBody LibraryModel library)
+    {
+
+return (List<LibraryModel>) dao.search(library.getName());
+    }
 }
